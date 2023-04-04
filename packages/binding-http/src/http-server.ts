@@ -703,8 +703,7 @@ export default class HttpServer implements ProtocolServer {
                 if (this.baseUri !== undefined) {
                     for (const name of Array.from(this.things.keys())) {
                         if (name) {
-                            const thingDescriptionUrl: string = this.baseUri.concat("/", encodeURIComponent(name));
-                            list.push(thingDescriptionUrl);
+                            list.push(this.baseUri.concat("/", encodeURIComponent(name)));
                         }
                     }
                 } else {
@@ -713,15 +712,15 @@ export default class HttpServer implements ProtocolServer {
                         for (const name of Array.from(this.things.keys())) {
                             // FIXME the undefined check should NOT be necessary (however there seems to be null in it)
                             if (name) {
-                                const thingDescriptionUrl: string =
+                                list.push(
                                     this.scheme +
                                     "://" +
                                     Helpers.toUriLiteral(address) +
                                     ":" +
                                     this.getPort() +
                                     "/" +
-                                    encodeURIComponent(name);
-                                list.push(thingDescriptionUrl);
+                                    encodeURIComponent(name)
+                                );
                             }
                         }
                     }
