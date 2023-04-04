@@ -448,13 +448,24 @@ class HttpServerTest {
 
         await httpServer.expose(testThing);
 
-        const uri = "http://localhost:8080/smart-coffee-machine";
-        const body = await (await fetch(uri)).text();
+        const uriThingDescription = "http://localhost:8080/smart-coffee-machine";
+        const bodyThingDescription = await (await fetch(uriThingDescription)).text();
 
-        const expectedUrl = `${theBaseUri}/smart-coffee-machine/actions/makeDrink`;
+        const expectedUrlForAction = `${theBaseUri}/smart-coffee-machine/actions/makeDrink`;
+        const expectedUrlForProperty = `${theBaseUri}/smart-coffee-machine/properties/maintenanceNeeded`;
 
-        expect(body).to.include(expectedUrl);
-        debug(`Found URL ${expectedUrl} in TD`);
+        expect(bodyThingDescription).to.include(expectedUrlForAction);
+        expect(bodyThingDescription).to.include(expectedUrlForProperty);
+        debug(`Found URL ${expectedUrlForAction} in TD`);
+
+        const uriThingList = "http://localhost:8080";
+        const bodyThingList = await (await fetch(uriThingList)).text();
+
+        const expectedUrlForThing = `${theBaseUri}/smart-coffee-machine`;
+
+        expect(bodyThingList).to.include(expectedUrlForThing);
+        debug(`Found URL ${expectedUrlForThing} in list of things`);
+
         await httpServer.stop();
     }
 
