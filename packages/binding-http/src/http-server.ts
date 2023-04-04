@@ -714,12 +714,12 @@ export default class HttpServer implements ProtocolServer {
                             if (name) {
                                 list.push(
                                     this.scheme +
-                                    "://" +
-                                    Helpers.toUriLiteral(address) +
-                                    ":" +
-                                    this.getPort() +
-                                    "/" +
-                                    encodeURIComponent(name)
+                                        "://" +
+                                        Helpers.toUriLiteral(address) +
+                                        ":" +
+                                        this.getPort() +
+                                        "/" +
+                                        encodeURIComponent(name)
                                 );
                             }
                         }
