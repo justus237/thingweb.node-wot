@@ -700,20 +700,29 @@ export default class HttpServer implements ProtocolServer {
                 res.setHeader("Content-Type", ContentSerdes.DEFAULT);
                 res.writeHead(200);
                 const list = [];
-                for (const address of Helpers.getAddresses()) {
-                    // FIXME are Iterables really such a non-feature that I need array?
+                if (this.baseUri !== undefined) {
                     for (const name of Array.from(this.things.keys())) {
-                        // FIXME the undefined check should NOT be necessary (however there seems to be null in it)
                         if (name) {
-                            list.push(
-                                this.scheme +
+                            const thingDescriptionUrl: string = this.baseUri.concat("/", encodeURIComponent(name));
+                            list.push(thingDescriptionUrl);
+                        }
+                    }
+                } else {
+                    for (const address of Helpers.getAddresses()) {
+                        // FIXME are Iterables really such a non-feature that I need array?
+                        for (const name of Array.from(this.things.keys())) {
+                            // FIXME the undefined check should NOT be necessary (however there seems to be null in it)
+                            if (name) {
+                                const thingDescriptionUrl: string =
+                                    this.scheme +
                                     "://" +
                                     Helpers.toUriLiteral(address) +
                                     ":" +
                                     this.getPort() +
                                     "/" +
-                                    encodeURIComponent(name)
-                            );
+                                    encodeURIComponent(name);
+                                list.push(thingDescriptionUrl);
+                            }
                         }
                     }
                 }
