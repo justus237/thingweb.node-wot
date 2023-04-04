@@ -81,7 +81,6 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
     __eventListeners: ProtocolListenerRegistry = new ProtocolListenerRegistry();
 
     private getServient: () => Servient;
-    // private getSubjectTD: () => Subject<WoT.ThingDescription>;
 
     constructor(servient: Servient, thingModel: WoT.ExposedThingInit = {}) {
         super();
@@ -89,13 +88,6 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
         this.getServient = () => {
             return servient;
         };
-        // this.getSubjectTD = new (class {
-        //     subjectTDChange: Subject<WoT.ThingDescription> = new Subject<WoT.ThingDescription>();
-        //     getSubject = () => {
-        //         return this.subjectTDChange;
-        //     };
-        // })().getSubject;
-        // The init object might still have undefined values, so initialize them here.
         // TODO: who checks that those are valid?
         this.id = thingModel.id ?? "";
         this.title = thingModel.title ?? "";
@@ -184,8 +176,6 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
             this.getServient()
                 .expose(this)
                 .then(() => {
-                    // inform TD observers
-                    // this.getSubjectTD().next(this.getThingDescription());
                     resolve();
                 })
                 .catch((err) => reject(err));
@@ -202,8 +192,6 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
         this.__eventHandlers.clear();
         this.__propertyHandlers.clear();
         this.__eventHandlers.clear();
-        // inform TD observers that thing is gone
-        // this.getSubjectTD().next();
     }
 
     /** @inheritDoc */
