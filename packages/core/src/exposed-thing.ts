@@ -16,8 +16,6 @@
 import * as WoT from "wot-typescript-definitions";
 import * as TDT from "wot-thing-description-types";
 
-import { Subject } from "rxjs/Subject";
-
 import * as TD from "@node-wot/td-tools";
 
 import Servient from "./servient";
@@ -83,7 +81,7 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
     __eventListeners: ProtocolListenerRegistry = new ProtocolListenerRegistry();
 
     private getServient: () => Servient;
-    private getSubjectTD: () => Subject<WoT.ThingDescription>;
+    // private getSubjectTD: () => Subject<WoT.ThingDescription>;
 
     constructor(servient: Servient, thingModel: WoT.ExposedThingInit = {}) {
         super();
@@ -91,12 +89,12 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
         this.getServient = () => {
             return servient;
         };
-        this.getSubjectTD = new (class {
-            subjectTDChange: Subject<WoT.ThingDescription> = new Subject<WoT.ThingDescription>();
-            getSubject = () => {
-                return this.subjectTDChange;
-            };
-        })().getSubject;
+        // this.getSubjectTD = new (class {
+        //     subjectTDChange: Subject<WoT.ThingDescription> = new Subject<WoT.ThingDescription>();
+        //     getSubject = () => {
+        //         return this.subjectTDChange;
+        //     };
+        // })().getSubject;
         // The init object might still have undefined values, so initialize them here.
         // TODO: who checks that those are valid?
         this.id = thingModel.id ?? "";
@@ -187,7 +185,7 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
                 .expose(this)
                 .then(() => {
                     // inform TD observers
-                    this.getSubjectTD().next(this.getThingDescription());
+                    // this.getSubjectTD().next(this.getThingDescription());
                     resolve();
                 })
                 .catch((err) => reject(err));
@@ -205,7 +203,7 @@ export default class ExposedThing extends TD.Thing implements WoT.ExposedThing {
         this.__propertyHandlers.clear();
         this.__eventHandlers.clear();
         // inform TD observers that thing is gone
-        this.getSubjectTD().next();
+        // this.getSubjectTD().next();
     }
 
     /** @inheritDoc */
